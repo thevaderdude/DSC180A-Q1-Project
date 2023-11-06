@@ -1,7 +1,8 @@
-numpy
-networkx
-python-igraph
-pyyaml
-pytz
-matplotlib
-tensorflow==1.15.0
+matplotlib==3.7.1
+networkx==3.2.1
+numpy==1.24.3
+python_igraph==0.11.2
+pytz==2022.7
+PyYAML==6.0
+PyYAML==6.0.1
+torch==2.1.0
