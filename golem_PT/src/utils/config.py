@@ -138,15 +138,10 @@ def add_training_args(parser):
                         type=int,
                         default=5000,
                         help="Number of iterations between each checkpoint. Set to None to disable.")
-    parser.add_argument('--early_stop',
-                        type=bool,
-                        default=False,
-                        help='Boolean for early stopping. Default is true.')
     parser.add_argument('--early_stop_delta',
                         type=float,
-                        default=0.01,
-                        help='Float for early stopping criteria.')
-    
+                        default=None,
+                        help='Float for early stopping criteria. Set to None to disable.')
 
 
 def add_other_args(parser):

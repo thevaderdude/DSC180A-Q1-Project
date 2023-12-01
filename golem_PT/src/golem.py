@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-def golem(X, lambda_1, lambda_2, equal_variances=True,
+def golem(X, lambda_1, lambda_2, es_threshold, equal_variances=True,
           num_iter=1e+5, learning_rate=1e-3, seed=1,
           checkpoint_iter=None, output_dir=None, B_init=None):
     """Solve the unconstrained optimization problem of GOLEM, which involves
@@ -54,7 +54,7 @@ def golem(X, lambda_1, lambda_2, equal_variances=True,
 
     # Training
     trainer = GolemTrainer(learning_rate)
-    B_est = trainer.train(model, X_train, X_val, num_iter, checkpoint_iter, output_dir)
+    B_est = trainer.train(model, X_train, X_val, num_iter, es_threshold, checkpoint_iter, output_dir)
 
     return B_est    # Not thresholded yet
 

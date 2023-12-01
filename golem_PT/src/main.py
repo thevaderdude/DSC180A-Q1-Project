@@ -53,7 +53,7 @@ def main():
         B_init = None
 
     # GOLEM
-    B_est = golem(dataset.X, args.lambda_1, args.lambda_2, args.equal_variances, args.num_iter,
+    B_est = golem(dataset.X, args.lambda_1, args.lambda_2, args.early_stop_delta, args.equal_variances, args.num_iter,
                   args.learning_rate, args.seed, args.checkpoint_iter, output_dir, B_init)
     _logger.info("Finished training the model.")
 

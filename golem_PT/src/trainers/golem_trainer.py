@@ -21,7 +21,7 @@ class GolemTrainer:
         
 
 
-    def train(self, model, X_train, X_val, num_iter, checkpoint_iter=None, output_dir=None):
+    def train(self, model, X_train, X_val, num_iter, es_threshold, checkpoint_iter=None, output_dir=None):
         # TODO: fix docstring
         """Training and checkpointing.
 
@@ -43,12 +43,26 @@ class GolemTrainer:
                 score, likelihood, h, B_est = self.eval_iter(model, X_train)
                 train_data = score, likelihood, h, B_est
                 val_data = self.eval_iter(model, X_val)
+                val_score, val_likelihood, val_h, val_B_est = val_data
+                prev_score = val_score
             else:    # Train
                 score, likelihood, h, B_est = self.train_iter(model, X_train)
                 train_data = score, likelihood, h, B_est
                 val_data = self.eval_iter(model, X_val)
 
             if checkpoint_iter is not None and i % checkpoint_iter == 0:
+                # do we do early stopping?
+                if es_threshold is not None:
+                    val_score, val_likelihood, val_h, val_B_est = val_data
+                    if i == 0:
+                        pass
+                    else:
+                        perc = (val_score - prev_score) / prev_score
+                        if np.abs(perc) < es_threshold:
+                            print(f'Early Stop: p: {perc}, i: {i}, loss: {val_score}')
+                            break
+                        prev_score = val_score
+
                 self.train_checkpoint(i, train_data, val_data, output_dir)
 
         return B_est
