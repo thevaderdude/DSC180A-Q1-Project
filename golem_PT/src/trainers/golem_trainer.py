@@ -21,7 +21,8 @@ class GolemTrainer:
         
 
 
-    def train(self, model, X, num_iter, checkpoint_iter=None, output_dir=None):
+    def train(self, model, X_train, X_val, num_iter, checkpoint_iter=None, output_dir=None):
+        # TODO: fix docstring
         """Training and checkpointing.
 
         Args:
@@ -39,12 +40,16 @@ class GolemTrainer:
         self._logger.info("Started training for {} iterations.".format(num_iter))
         for i in range(0, int(num_iter) + 1):
             if i == 0:    # Do not train here, only perform evaluation
-                score, likelihood, h, B_est = self.eval_iter(model, X)
+                score, likelihood, h, B_est = self.eval_iter(model, X_train)
+                train_data = score, likelihood, h, B_est
+                val_data = self.eval_iter(model, X_val)
             else:    # Train
-                score, likelihood, h, B_est = self.train_iter(model, X)
+                score, likelihood, h, B_est = self.train_iter(model, X_train)
+                train_data = score, likelihood, h, B_est
+                val_data = self.eval_iter(model, X_val)
 
             if checkpoint_iter is not None and i % checkpoint_iter == 0:
-                self.train_checkpoint(i, score, likelihood, h, B_est, output_dir)
+                self.train_checkpoint(i, train_data, val_data, output_dir)
 
         return B_est
 
@@ -89,7 +94,8 @@ class GolemTrainer:
 
         return score, likelihood, h, model.B.detach().numpy()
 
-    def train_checkpoint(self, i, score, likelihood, h, B_est, output_dir):
+    def train_checkpoint(self, i, train_data, val_data, output_dir):
+        # TODO: fix docstring
         """Log and save intermediate results/outputs.
 
         Args:
@@ -100,9 +106,16 @@ class GolemTrainer:
             B_est (numpy.ndarray): [d, d] estimated weighted matrix.
             output_dir (str): Output directory to save training outputs.
         """
+        val_score, val_likelihood, val_h, val_B_est = val_data
+        score, likelihood, h, B_est = train_data
         self._logger.info(
-            "[Iter {}] score {:.3E}, likelihood {:.3E}, h {:.3E}".format(
+            "TRAINING: [Iter {}] score {:.3E}, likelihood {:.3E}, h {:.3E}".format(
                 i, score, likelihood, h
+            )
+        )
+        self._logger.info(
+            "VALIDATION: [Iter {}] score {:.3E}, likelihood {:.3E}, h {:.3E}".format(
+                i, val_score, val_likelihood, val_h
             )
         )
 
@@ -110,3 +123,11 @@ class GolemTrainer:
            # Save the weighted matrix (without post-processing)
             create_dir('{}/checkpoints'.format(output_dir))
             np.save('{}/checkpoints/B_iteration_{}.npy'.format(output_dir, i), B_est)
+            # save train and val_scores
+            if i == 0:
+                with open(f'{output_dir}/scores.csv', 'w') as file:
+                    file.write('i,train,val\n')
+            # write new line
+            with open(f'{output_dir}/scores.csv', 'a') as file:
+                file.write(f'{str(i)},{str(score.detach().numpy())},{str(val_score.detach().numpy())}\n')
+

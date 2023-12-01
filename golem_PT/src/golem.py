@@ -2,6 +2,8 @@ import os
 
 from models import GolemModel
 from trainers import GolemTrainer
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 # For logging of tensorflow messages
@@ -36,20 +38,27 @@ def golem(X, lambda_1, lambda_2, equal_variances=True,
         (1) GOLEM-NV: equal_variances=False, lambda_1=2e-3, lambda_2=5.0.
         (2) GOLEM-EV: equal_variances=True, lambda_1=2e-2, lambda_2=5.0.
     """
+
+    # TRAIN VAL SPLIT
+    # TODO: Parameterize this
+    X_train, X_val = train_test_split(X, test_size=0.1)
+
     # Center the data
-    X = X - X.mean(axis=0, keepdims=True)
+    X_train = X_train - X_train.mean(axis=0, keepdims=True)
+    X_val = X_val - X_train.mean(axis=0, keepdims=True)
+
 
     # Set up model
-    n, d = X.shape
+    n, d = X_train.shape
     model = GolemModel(n, d, lambda_1, lambda_2, equal_variances, seed, B_init)
 
     # Training
     trainer = GolemTrainer(learning_rate)
-    B_est = trainer.train(model, X, num_iter, checkpoint_iter, output_dir)
+    B_est = trainer.train(model, X_train, X_val, num_iter, checkpoint_iter, output_dir)
 
     return B_est    # Not thresholded yet
 
-
+# DONT USE THIS
 if __name__ == '__main__':
     # Minimal code to run GOLEM.
     import logging

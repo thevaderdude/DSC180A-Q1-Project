@@ -1,0 +1,8 @@
+i,trainm,val
+0,tensor(7.2005e+12),tensor(7.2005e+12)
+5000,tensor(1.1569e+10, grad_fn=<AddBackward0>),tensor(1.1562e+10)
+10000,tensor(9.7387e+08, grad_fn=<AddBackward0>),tensor(9.7341e+08)
+15000,tensor(92650560., grad_fn=<AddBackward0>),tensor(92607400.)
+20000,tensor(9113089., grad_fn=<AddBackward0>),tensor(9108862.)
+25000,tensor(928793., grad_fn=<AddBackward0>),tensor(928352.4375)
+30000,tensor(99588.8281, grad_fn=<AddBackward0>),tensor(99523.2812)
