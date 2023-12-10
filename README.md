@@ -1,25 +1,95 @@
-# DSC 180A Quarter 1 Project
-## Improving [GOLEM](https://github.com/ignavierng/golem)
-**In order to improve GOLEM, we converted original model from Tensorflow to Pytorch, added a validation set, implemented early stopping, and used a different DAG constraint.**
 
-GOLEM converted to Pytorch with the additions described above is located in [golem_PT/](/golem_PT/).
+# Comparisons of Causal Discovery Opimisation Methods
+
+__This project analizeses the reletive effectiveness of 3 new methods for learning causal DAGs:
+
+- NOTEARS
+- GOLEM
+- DAGMA
+
+This project adapts existing implentations of these methods to run in pyTorch, have a simple way to generate statistics on all 3 methods, repicates the metrics in the original papers, and compares their performance across consistent metrics. Finaly we make minor imporvments implementing an early stopping threashold in all 3. We expect DAGMA to perform the best, followed by GOLEM, followed by NOTEARS as this is the inverse order they were developed.
+
+## Data:
+
+We have two sources of data.
+
+(1) Synthetic data prodiced by synthetic_dataset in data_loader/synthetic_dataset
+
+(2) Data from the cdt library, 
+	(a) Sacks Dataset
+	(b) Tuebingen
 
 
-### Validation Set
-In order to implement early stopping and examine overfitting, we modified the training procedure to have a holdout dataset that was not trained on. We also made it so the training procedure will output a csv of the training and validation losses. The analysis of the loss over training is located at [golem_PT/Loss_Analysis.ipynb](golem_PT/Loss_Analysis.ipynb).
+## Running the project
 
-### Early Stopping
+* To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`
 
-From the analysis of the loss, we determined that a threshold of **1e-4** for the relative change between checkpoints (1000 epochs) would result in performance equivalent to that of the full run in approximately half the epochs. A run of GOLEM with early stopping is located in [golem_PT/Early_Stop_Test.ipynb](golem_PT/Early_Stop_Test.ipynb).
+### Viewing the project through jupyter notebook
+* All data and graphs have been generated at run.ipynb. This is the simplest and fasted way to run the code
+  
+### Building the project stages using `run.py`
 
-### Alternate DAG Constraint
-(Under Construction) 
+* 'python run.py all' will run through and generate all the sections in run.ipynb in one script
+
+* 'python run.py main' will run through examples of main.py 
+
+* 'python run.py compare' will run a set of comparisons between the methods on a set of data
+
+* 'python run.py replicate' will generate replications of the results of the 3 papers 
+
+* 'python run.py real_data' will run the 3 methods on two sets of real world data, sacks and tuebingen
+
+* 'python run.py early_stop' will generate graphs showing where the best values to early stop at for the methods
+
+### Run your own using main.py
+
+* You can run each method on generated data using 'python main.py' comand from the root directory
+
+* Many examples are provided in run.ipynb
+
+* 'python main.py' is followed by the name of the method in CAPS(NOTEARS, GOLEM, DAGMA) followed by its required arguments
+
+```rb
+python3 main.py --method GOLEM \
+                     --seed 1 \
+                     --d 10 \
+                     --graph_type ER \
+                     --degree 4 \
+                     --noise_type gaussian_ev \
+                     --equal_variances \
+                     --lambda_1 2e-2 \
+                     --lambda_2 5.0 \
+                     --checkpoint_iter 5000
+
+python3 main.py  --method DAGMA \
+                     --seed 1 \
+                     --d 10 \
+                     --lambda_1 2e-2 \
+                     --graph_type ER \
+                     --degree 4 \
+                     --noise_type gaussian_ev \
+                     --equal_variances \
+                     --checkpoint_iter 1000 \
+                     --loss l2
+
+!python3 main.py  --method NOTEARS \
+                     --seed 1 \
+                     --d 10 \
+                     --graph_type ER \
+                     --degree 4 \
+                     --noise_type gaussian_ev \
+                     --equal_variances \
+                     --lambda_1 2e-2 \
+                     --loss l2
+``` 
+ 
+  
+## Reference
+Ng, Ignavier, AmirEmad Ghassami, and Kun Zhang. "On the role of sparsity and dag constraints for learning linear dags." *Advances in Neural Information Processing Systems* 33 (2020): 17943-17954.
+
+Zheng, Xun, et al. "Dags with no tears: Continuous optimization for structure learning." *Advances in neural information processing systems* 31 (2018).
+
+Bello, Kevin, Bryon Aragam, and Pradeep Ravikumar. "Dagma: Learning dags via m-matrices and a log-determinant acyclicity characterization." *Advances in Neural Information Processing Systems* 35 (2022): 8226-8239.
 
 
 
-## Misc. Acknowledgements
-The original work using Tensorflow is located in [golem_TF/](/golem_TF/)
-
-Updated requirements.txt is located at [golem_PT/requirements.txt](golem_PT/requirements.txt)
-
-Examples located at [golem_PT/GOLEM-EV.ipynb](golem_PT/GOLEM-EV.ipynb)
