@@ -99,14 +99,14 @@ def compare(dataset, lambda_1 = 2e-2, lambda_2 = 5.0,
 
     #nonlinear dagma
     if nonlinear:
-    	tm = time()
-    	eq_model = DagmaMLP(dims=dims, bias=True)
-    	model = DagmaNonlinear(eq_model)
-    	B_est = model.fit(dataset.X)
+        tm = time()
+        eq_model = DagmaMLP(dims=dims, bias=True)
+        model = DagmaNonlinear(eq_model)
+        B_est = model.fit(dataset.X)
 
-    	B_processed = postprocess(B_est, 0.3)
+        B_processed = postprocess(B_est, 0.3)
 
-    	plot_method("nonlinear dagma",  
+        plot_method("nonlinear dagma",  
              dataset.X, dataset.B, B_init,
              B_est, B_processed, time()-tm, out)
 

@@ -1,0 +1,27 @@
+2023-11-05 20:59:40,859 INFO - __main__ - Finished setting up the logger.
+2023-11-05 20:59:40,957 INFO - numexpr.utils - NumExpr defaulting to 8 threads.
+2023-11-05 20:59:41,079 INFO - __main__ - Finished loading the dataset.
+2023-11-05 20:59:41,416 INFO - trainers.golem_trainer - Started training for 100000.0 iterations.
+2023-11-05 20:59:41,417 CRITICAL - utils.logger - Unhandled exception.
+Traceback (most recent call last):
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 70, in <module>
+    main()
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 56, in main
+    B_est = golem(dataset.X, args.lambda_1, args.lambda_2, args.equal_variances, args.num_iter,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/golem.py", line 48, in golem
+    B_est = trainer.train(model, X, num_iter, checkpoint_iter, output_dir)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/trainers/golem_trainer.py", line 42, in train
+    score, likelihood, h, B_est = self.eval_iter(model, X)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/trainers/golem_trainer.py", line 66, in eval_iter
+    score, likelihood, h, B_est  = model.run(X)
+                                   ^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/models/golem_model.py", line 69, in run
+    self.likelihood = self._compute_likelihood()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/models/golem_model.py", line 96, in _compute_likelihood
+    torch.norm(self.X - self.X @ self.B, p=2)
+                        ~~~~~~~^~~~~~~~
+TypeError: unsupported operand type(s) for @: 'numpy.ndarray' and 'Parameter'
