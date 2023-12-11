@@ -1,6 +1,6 @@
 """A conviniant way to run all programs in this project"""
 
-from subprocess import run
+import subprocess
 import sys
 from glob import glob
 
@@ -30,52 +30,31 @@ import cdt
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import argparse
 from src.utils.utils import get_init_path
 
-commands = {
-'clear': clear,
-'all': all,
-'main':main_comand,
-'compare':compareisons,
-'replicate':replication,
-'real_data':real_dataset,
-'early_stop':early_stop
-}
 
-def run():
-    parser = argparse.ArgumentParser()
-
-    cmd = parser.cmd
-
-    comands[cmd]()
-
-def all():
-    """Dynamicaly gets and runs all comands in comands"""
-    for k, f in comands.values():
-        print("running:{}".format(k)
-        f()
 
 def main_comand():
     """Runs a set of executions of main.py evaluating all models against
        synthetic datasets"""
-    subprocess.run(['src/run_examples.bash'], std_out = sys.stdout, check=True, text=True)
+    subprocess.run(['./src/run_examples.bash'], stdout = sys.stdout, check=True, text=True)
 
 def comareisons():
-    """generates a set of graphs showing how the different models
+   """generates a set of graphs showing how the different models
        perform against eachother with the same datasets"""
-    seed = 1
-    num_iter = 1e+5
-    learning_rate=1e-3
+   seed = 1
+   num_iter = 1e+5
+   learning_rate=1e-3
 
-    output_dir = "output"
+   output_dir = "output"
 
-    examples = 10
-    d = 6
-    degree = 3
+   examples = 10
+   d = 6
+   degree = 3
 
 
-    dataset = SyntheticDataset(examples, d, 'ER', 
+   dataset = SyntheticDataset(examples, d, 'ER', 
                            degree, 'gaussian_ev', 
                            3, seed)
 
@@ -282,7 +261,7 @@ def early_stop():
                      '--lambda_1 2e-2',
                      '--lambda_2 5.0',
                      '--checkpoint_iter 5000'], 
-                     std_out = sys.stdout, check=True, text=True) 
+                     stdout = sys.stdout, check=True, text=True) 
     path = '{}/scores.csv'.format(sorted(glob('{}/*'.format('output')))[-1])
 
     df = pd.read_csv(path)
@@ -296,13 +275,38 @@ def early_stop():
     plt.show()
 
 def clean():
-    subprocess.run(['rm', 'output/*'], std_out = sys.stdout, check=True, text=True)
+    subprocess.run(['rm', 'output/*'], stdout = sys.stdout, check=True, text=True)
 
 
 def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('cmd', choices=commands.keys())
+
+    return parser.parse_args()
+
+def all():
+    """Dynamicaly gets and runs all comands in comands"""
+    for k in commands:
+        if (k != 'all'):
+           print("running:{}".format(k))
+           commands[k]()
+
+commands = {
+'all': all,
+'main':main_comand,
+'compare':comareisons,
+'replicate':replication,
+'real_data':real_dataset,
+'early_stop':early_stop
+}
+
+def run():
+    parser = get_args()
+
+    cmd = parser.cmd
+    print(cmd)
+    commands[cmd]()
 
 
 

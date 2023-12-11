@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo GOLEM-EV
 
 python3 main.py --method GOLEM \
