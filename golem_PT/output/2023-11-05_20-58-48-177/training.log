@@ -1,0 +1,19 @@
+2023-11-05 20:58:48,177 INFO - __main__ - Finished setting up the logger.
+2023-11-05 20:58:48,271 INFO - numexpr.utils - NumExpr defaulting to 8 threads.
+2023-11-05 20:58:48,399 INFO - __main__ - Finished loading the dataset.
+2023-11-05 20:58:48,412 CRITICAL - utils.logger - Unhandled exception.
+Traceback (most recent call last):
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 70, in <module>
+    main()
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 56, in main
+    B_est = golem(dataset.X, args.lambda_1, args.lambda_2, args.equal_variances, args.num_iter,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/golem.py", line 44, in golem
+    model = GolemModel(n, d, lambda_1, lambda_2, equal_variances, seed, B_init)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/models/golem_model.py", line 54, in __init__
+    self.likelihood = self._compute_likelihood()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/models/golem_model.py", line 96, in _compute_likelihood
+    torch.norm(self.X - self.X @ self.B, ord=2)
+TypeError: norm() got an unexpected keyword argument 'ord'

@@ -1,0 +1,30 @@
+2023-11-05 21:01:00,721 INFO - __main__ - Finished setting up the logger.
+2023-11-05 21:01:00,813 INFO - numexpr.utils - NumExpr defaulting to 8 threads.
+2023-11-05 21:01:00,946 INFO - __main__ - Finished loading the dataset.
+2023-11-05 21:01:01,203 INFO - trainers.golem_trainer - Started training for 100000.0 iterations.
+2023-11-05 21:01:01,205 INFO - trainers.golem_trainer - [Iter 0] score 7.200E+12, likelihood 1.396E+02, h 1.440E+12
+2023-11-05 21:01:04,050 INFO - trainers.golem_trainer - [Iter 5000] score 1.157E+10, likelihood 1.383E+02, h 2.314E+09
+2023-11-05 21:01:06,881 INFO - trainers.golem_trainer - [Iter 10000] score 9.739E+08, likelihood 1.278E+02, h 1.948E+08
+2023-11-05 21:01:09,681 INFO - trainers.golem_trainer - [Iter 15000] score 9.265E+07, likelihood 1.183E+02, h 1.853E+07
+2023-11-05 21:01:12,530 INFO - trainers.golem_trainer - [Iter 20000] score 9.113E+06, likelihood 1.133E+02, h 1.823E+06
+2023-11-05 21:01:15,591 INFO - trainers.golem_trainer - [Iter 25000] score 9.288E+05, likelihood 1.121E+02, h 1.857E+05
+2023-11-05 21:01:18,838 INFO - trainers.golem_trainer - [Iter 30000] score 9.958E+04, likelihood 1.120E+02, h 1.989E+04
+2023-11-05 21:01:20,183 CRITICAL - utils.logger - Unhandled exception.
+Traceback (most recent call last):
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 70, in <module>
+    main()
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/main.py", line 56, in main
+    B_est = golem(dataset.X, args.lambda_1, args.lambda_2, args.equal_variances, args.num_iter,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/golem.py", line 48, in golem
+    B_est = trainer.train(model, X, num_iter, checkpoint_iter, output_dir)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/trainers/golem_trainer.py", line 44, in train
+    score, likelihood, h, B_est = self.train_iter(model, X)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/valen/Documents/GitHub/golem/golem_PT/src/trainers/golem_trainer.py", line 84, in train_iter
+    model.train_op.zero_grad()
+  File "/Users/valen/anaconda3/lib/python3.11/site-packages/torch/_compile.py", line 20, in inner
+    @functools.wraps(fn)
+    
+KeyboardInterrupt
