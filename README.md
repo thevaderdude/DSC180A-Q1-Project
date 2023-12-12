@@ -1,7 +1,7 @@
 
-# Comparisons of Causal Discovery Opimisation Methods
+# Comparisons of Causal Discovery Optimization Methods
 
-__This project analizeses the reletive effectiveness of 3 new methods for learning causal DAGs:
+__This project analyses the relative effectiveness of 3 new methods for learning DAGs:
 
 - NOTEARS
 - GOLEM
@@ -25,7 +25,7 @@ We have two sources of data.
 * To install the dependencies, run the following command from the root directory of the project: `pip install -r requirements.txt`
 
 ### Viewing the project through jupyter notebook
-* All data and graphs have been generated at run.ipynb. This is the simplest and fasted way to run the code
+* All data and graphs have been generated at run.ipynb. This is the simplest and fasted way to run the code.
   
 ### Building the project stages using `run.py`
 
